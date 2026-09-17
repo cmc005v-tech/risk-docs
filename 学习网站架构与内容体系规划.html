@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习网站架构与内容体系规划 — 风险处置实战系列学习站</title>
+<meta name="description" content="参照跨境电商高级实战系列学习网站模式，为风险处置内容建设体系化学习站的完整规划：信息架构、栏目体系、内容映射、学习路径、视觉交互与技术方案。">
+<style>
+:root{
+  --ink:#182230; --ink2:#41506b; --ink3:#8a94a8;
+  --bg:#f6f8fb; --card:#fff; --line:#dfe6f0;
+  --navy:#132c47; --navy2:#1e4a79; --gold:#c89b3c; --gold-bg:#f9efdd;
+  --ok:#1e7d4b; --warn:#a05a12;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",monospace,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75}
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px}
+
+header.hero{background:linear-gradient(160deg,#0d1f33 0%,#132c47 50%,#1e4a79 100%);color:#fff;padding:64px 0 54px;position:relative;overflow:hidden}
+header.hero::after{content:"◈";position:absolute;right:30px;bottom:-70px;font-size:300px;color:rgba(200,155,60,.12);line-height:1}
+.kicker{display:inline-block;font-size:.8rem;letter-spacing:3px;color:#e7d5a8;text-transform:uppercase;margin-bottom:14px;border:1px solid rgba(200,155,60,.55);padding:4px 14px;border-radius:20px;font-family:inherit}
+h1{font-size:2rem;line-height:1.35;font-weight:700;margin-bottom:14px}
+.hero p.sub{font-size:1.02rem;color:#c3d1e2;max-width:780px}
+.hero-meta{margin-top:22px;display:flex;gap:26px;flex-wrap:wrap;font-size:.85rem;color:#9db4cd}
+.hero-meta b{color:#fff}
+.hero-meta .sep{color:rgba(255,255,255,.25)}
+
+nav.toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto}
+nav.toc a{display:inline-block;padding:13px 11px;font-size:.87rem;color:var(--ink2);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+nav.toc a:hover{color:var(--navy2);border-bottom-color:var(--gold)}
+
+section{padding:52px 0 6px}
+h2{font-size:1.48rem;color:var(--navy);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+h2 .no{display:inline-flex;width:34px;height:34px;border-radius:9px;background:var(--gold);color:#fff;align-items:center;justify-content:center;font-size:1rem;color:#17304e;font-weight:800;flex:none}
+.sec-desc{color:var(--ink3);font-size:.92rem;margin-bottom:24px}
+h3{font-size:1.12rem;color:var(--navy2);margin:28px 0 12px;font-weight:700}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:18px;box-shadow:0 1px 3px rgba(19,44,71,.05)}
+.card h4{font-size:1rem;margin-bottom:10px;color:var(--ink);font-weight:700}
+
+/* 树/蓝图 */
+.tree{font-family:Consolas,"Cascadia Code",Menlo,monospace;font-size:.85rem;background:#0f2033;color:#d8e5f4;border-radius:10px;padding:18px 22px;overflow-x:auto;line-height:1.9}
+.tree .d{color:#7ec8ff;font-weight:600}
+.tree .g{color:var(--gold)} 
+.tree .c{color:#7d8ca3}
+.tree .p{color:#ffd98a}
+
+/* 表格 */
+.table-scroll{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:.87rem;background:#fff}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#eef2f8;color:var(--navy);font-weight:700;white-space:nowrap}
+tbody tr:nth-child(even){background:#fafbfe}
+.mid{text-align:center}
+.badge{display:inline-block;font-size:.72rem;padding:1px 9px;border-radius:10px;white-space:nowrap}
+.b-mod{background:#e8effa;color:#1e4a79}
+.b-tool{background:#f9efdd;color:#8a6414}
+.b-law{background:#f2e8e8;color:#8f3a3a}
+.b-path{background:#e4f3ea;color:#1e6b46}
+.b-lab{background:#eee9fb;color:#5b4a9e}
+
+/* 学习路径周历 */
+.week{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:8px}
+.week .wk{flex:none;width:64px;text-align:center;background:var(--navy);color:#fff;border-radius:8px;padding:8px 4px;font-size:.78rem;line-height:1.5}
+.week .wk b{display:block;font-size:1.05rem}
+.week .wbody{flex:1}
+.week .wbody h5{font-size:.95rem;color:var(--navy);margin-bottom:4px}
+.week .wbody p{font-size:.85rem;color:var(--ink2)}
+.week .out{flex:none;max-width:170px;font-size:.78rem;color:#8a6414;background:var(--gold-bg);border-radius:8px;padding:6px 10px;align-self:center}
+.phase-tag{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 10px;border-radius:10px;margin-right:6px;vertical-align:2px}
+.pt1{background:#e4f3ea;color:#1e6b46}
+.pt2{background:#e8effa;color:#1e4a79}
+.pt3{background:#f9efdd;color:#8a6414}
+
+/* 组件清单 */
+.comp{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.comp .it{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.comp .it b{display:block;color:var(--navy);font-size:.92rem;margin-bottom:4px}
+.comp .it span{font-size:.8rem;color:var(--ink2)}
+.prio{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:6px;color:#fff;margin-right:6px}
+.prio.p0{background:#a33131}.prio.p1{background:#a05a12}.prio.p2{background:#44506a}
+
+ul.clean{list-style:none}
+ul.clean>li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--line)}
+ul.clean>li:last-child{border-bottom:none}
+ul.clean>li::before{content:"▸";position:absolute;left:6px;color:var(--gold);font-weight:700}
+ul.clean b{color:var(--navy2)}
+
+blockquote.callout{border-left:4px solid var(--gold);background:var(--gold-bg);padding:12px 18px;margin:16px 0;border-radius:0 8px 8px 0;font-size:.9rem;color:#5c4a1e}
+
+footer{border-top:1px solid var(--line);margin-top:58px;padding:28px 0 44px;text-align:center;color:var(--ink3);font-size:.8rem}
+
+@media print{
+  nav.toc{display:none}
+  header.hero{padding:32px 0}
+  .card,table{box-shadow:none}
+  section{padding:24px 0 4px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">Learning Site Blueprint</span>
+    <h1>学习网站架构与内容体系规划<br>风险处置实战系列学习站</h1>
+    <p class="sub">参照「跨境电商高级实战系列」学习网站的体系化课程模式，将工作区 18 份风险处置内容资产，重构为一个「看得懂理论、拿得到工具、练得出技能」的实战型学习站。本规划为蓝图文档，网站原型在规划确认后实施。</p>
+    <div class="hero-meta">
+      <span>规划基准：<b>2026-09-14</b></span><span class="sep">|</span>
+      <span>内容映射：<b>18 源文件 → 6 大栏目</b></span><span class="sep">|</span>
+      <span>学习主线索：<b>3 个月 / 13 周成才路径</b></span><span class="sep">|</span>
+      <span>技术形态：<b>纯静态 · data 驱动 · 双击即用</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#position">1 定位</a>
+    <a href="#ia">2 信息架构</a>
+    <a href="#sections">3 栏目体系</a>
+    <a href="#mapping">4 内容映射</a>
+    <a href="#path">5 学习路径</a>
+    <a href="#visual">6 视觉交互</a>
+    <a href="#tech">7 技术方案</a>
+    <a href="#iterate">8 迭代验收</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ 1 定位 ============ -->
+<section id="position">
+  <h2><span class="no">1</span>站点定位与参照模式</h2>
+  <p class="sec-desc">回答两个问题：向谁提供什么价值、参照什么样的成熟形态。</p>
+
+  <div class="card">
+    <h4>目标人群与价值主张</h4>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th style="width:140px">人群</th><th>痛点</th><th>本站价值</th></tr></thead>
+        <tbody>
+          <tr><td>转型入行者（主）</td><td>想学企业风险处置，但资料零散、不知从何下手、无业界标准</td><td>3 个月成才路径 + 全量方法论 + 可直接套用的模板工具</td></tr>
+          <tr><td>在岗财务/法务/管理者</td><td>风控知识碎片化，缺体系；学了无法立刻用于业务</td><td>「理论→模板→工具→沙盘」闭环，学了就能产出报告/方案</td></tr>
+          <tr><td>跨境物流/电商从业者（特色）</td><td>行业特有风险（跨境纠纷、政策突变、舆情）缺乏适配方法</td><td>5 篇读书报告均含跨境物流/企业适配章节，站内独立成块</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>参照模式：跨境电商高级实战系列</h4>
+    <ul class="clean">
+      <li><b>体系化课程结构</b>：按「系列 → 模块 → 课时」三层组织，本站对应「实战系列 → 六大栏目 → 文章/任务」</li>
+      <li><b>学练用一体</b>：每模块配可下载工具与练习任务，不只给内容，还给交付物</li>
+      <li><b>实战导向文案</b>：栏目名用行动语言（理论课堂 / 实操工具箱 / 沙盘训练），弱化"读书笔记"感</li>
+      <li><b>技术延续已验证经验</b>：沿用本工作区已有的纯静态学习站架构（index.html + app.js + data.js + style.css），并承接 Astrology Academy 项目「JSON 数据驱动 + 双击即用」的成熟模式 — 本站 data.js 用 JS 变量替代 fetch JSON，比 JSON 方案更稳：<b>file:// 直接打开无 CORS 限制</b></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 2 信息架构 ============ -->
+<section id="ia">
+  <h2><span class="no">2</span>信息架构（站点地图）</h2>
+  <p class="sec-desc">单页应用 + hash 路由，六个一级栏目 + 首页，二级为文章/任务对象。</p>
+  <div class="tree">
+<span class="g">风险处置实战系列学习站</span>  <span class="c">（单页应用，双击 index.html 即用）</span>
+├─ <span class="d">#/ [首页]</span> 学习总览卡片 · 三个月路径图 · 最近更新 · 继续学习
+├─ <span class="d">#/path [01 学习路径]</span>  <span class="c">— 主线：13 周日历 + 打卡 + 输出物清单</span>
+│   ├─ 筑基期 W1-5（5 周）  ├─ 进阶期 W6-9（4 周）  └─ 成型期 W10-13（4 周）
+├─ <span class="d">#/theory [02 理论课堂]</span>  <span class="c">— 7 个子板块（认知方法论）</span>
+│   ├─ 危机处置思辨（预判·止损·复盘）        ← 读书报告《危机应对的道与术》
+│   ├─ 不良资产与债务纾困                    ← 《掘金：不良资产经营》
+│   ├─ 标准化风险评估方法论                  ← 《重大决策社会稳定风险评估指南》
+│   ├─ 非常规风险与反脆弱                    ← 《黑天鹅》
+│   ├─ AI 时代舆情攻防                       ← 《闪电战》
+│   ├─ 风控资产化认知                        ← 白皮书（7 章）
+│   └─ 资本视角延伸                         ← 投资人五大标准
+├─ <span class="d">#/tools [03 实操工具箱]</span>  <span class="c">— 8 件套卡片式工具墙</span>
+│   ├─ 模板·处置方案（三套预案） · 模板·尽调评估报告 · 模板·隔离止损SOP
+│   ├─ 模板·谈判话术 · 模板·复盘报告         <span class="c">（在线讲解 + docx 下载）</span>
+│   └─ 工具·尽调清单 · 工具·损失测算 · 工具·等级评估  <span class="c">（使用指南 + xlsx 下载）</span>
+├─ <span class="d">#/lab [04 沙盘训练]</span>   <span class="c">— 4 大爆雷场景练习（进阶项）</span>
+├─ <span class="d">#/cases [05 案例库]</span>  <span class="c">— 15-20 个标注案例（进阶项）</span>
+├─ <span class="d">#/law [06 法规参考]</span>  <span class="c">— 担保解释要点卡 · 央企应急办法架构图</span>
+└─ <span class="d">#/about [关于本站]</span> 资料来源 · 方法论 · 版本记录
+  </div>
+  <blockquote class="callout">设计原则：<b>「路径」是骨架</b>（告诉学习者怎么走），<b>「理论」是血肉</b>（方法论全文），<b>「工具」是双手</b>（直接拿去做事），<b>「沙盘/案例」是考场</b>（验证学到什么）。六个栏目恰好覆盖学习全链路。</blockquote>
+</section>
+
+<!-- ============ 3 栏目体系 ============ -->
+<section id="sections">
+  <h2><span class="no">3</span>栏目与章节体系</h2>
+  <p class="sec-desc">每个栏目的章节划分、来源内容与站内形态；文章数按 Phase 1（内容全量入站）口径估算。</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th style="width:110px">栏目</th><th style="width:230px">章节 / 子板块</th><th>内容来源（源文件）</th><th>站内形态</th><th style="width:70px" class="mid">篇数</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><span class="badge b-path">01 学习路径</span></td><td>总览</td><td>风险处置学习方案</td><td>三个月成才总览页</td><td class="mid">1</td></tr>
+        <tr><td>周历 W1-13</td><td>学习方案（13 周拆解）</td><td>周任务列表 + 打卡</td><td class="mid">13</td></tr>
+        <tr><td>输出物验收标准</td><td>学习方案 + 全套模板</td><td>每阶段验收清单页</td><td class="mid">3</td></tr>
+        <tr><td rowspan="7"><span class="badge b-mod">02 理论课堂</span></td><td>危机处置思辨</td><td>《危机应对的道与术》读书报告</td><td>摘要/四大环节/企业适配 4-5 篇</td><td class="mid">5</td></tr>
+        <tr><td>不良资产与债务纾困</td><td>《掘金》读书报告</td><td>行业生态/尽调估值/化解路径/纾困方案</td><td class="mid">5</td></tr>
+        <tr><td>标准化风险评估方法论</td><td>稳评指南读书报告</td><td>四性评估/五步法/评级/报告规范</td><td class="mid">5</td></tr>
+        <tr><td>非常规风险与反脆弱</td><td>《黑天鹅》读书报告</td><td>定义/认知陷阱/杠铃/反脆弱</td><td class="mid">5</td></tr>
+        <tr><td>AI 时代舆情攻防</td><td>《闪电战》读书报告</td><td>预警/黄金响应/处置/修复合集</td><td class="mid">5</td></tr>
+        <tr><td>风控资产化认知</td><td>白皮书</td><td>整理为 7 章 + 附录（修复半截标题）</td><td class="mid">9</td></tr>
+        <tr><td>资本视角延伸</td><td>投资人五大标准</td><td>单篇延伸阅读</td><td class="mid">1</td></tr>
+        <tr><td rowspan="2"><span class="badge b-tool">03 实操工具箱</span></td><td>模板讲解 ×5</td><td>处置方案/评估报告/隔离SOP/话术/复盘（docx）</td><td>结构拆解 + 使用时机 + 下载</td><td class="mid">5</td></tr>
+        <tr><td>工具指南 ×3</td><td>尽调清单/损失测算/等级评估（xlsx）</td><td>使用说明 + 下载（站外文件）</td><td class="mid">3</td></tr>
+        <tr><td><span class="badge b-lab">04 沙盘训练</span></td><td>四大爆雷场景</td><td>学习方案第 3 月场景</td><td>题干 → 输出要求 → 参考答案要点</td><td class="mid">4</td></tr>
+        <tr><td><span class="badge b-lab">05 案例库</span></td><td>标注案例 15-20 个</td><td>5 篇读书报告提取</td><td>案例卡（情境/处置/启示/标签）</td><td class="mid">15</td></tr>
+        <tr><td rowspan="2"><span class="badge b-law">06 法规参考</span></td><td>担保制度解释要点卡</td><td>民法典担保制度解释.pdf</td><td>13 条核心要点 + 原文索引</td><td class="mid">1</td></tr>
+        <tr><td>央企应急办法架构</td><td>中央企业应急管理办法.pdf</td><td>体系框架图 + 要点</td><td class="mid">1</td></tr>
+        <tr><td colspan="3"><b>Phase 1 合计（不含沙盘/案例）</b></td><td></td><td class="mid"><b>≈51</b></td></tr>
+        <tr><td colspan="3">Phase 1 + Phase 3 合计（全量）</td><td></td><td class="mid"><b>≈70</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote class="callout">文章数口径与《整理分析与优化建议》一致：Phase 1 完成后站内文章由当前 30 篇（学习方案 6 + 白皮书 24）提升至约 51 篇，覆盖全部 18 个源文件；Phase 3 加入沙盘与案例后约 70 篇。</blockquote>
+</section>
+
+<!-- ============ 4 内容映射 ============ -->
+<section id="mapping">
+  <h2><span class="no">4</span>内容到页面的映射</h2>
+  <p class="sec-desc">18 个源文件 → 站点栏目/页面的完整对照，实施时据此生成 data.js。</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th>源文件</th><th>目标栏目</th><th>拆分策略</th><th>难度</th><th>对应学习周</th></tr></thead>
+      <tbody>
+        <tr><td>1.危机应对的道与术_读书报告</td><td>02 理论课堂 · 危机处置思辨</td><td>摘要/框架/四环节×3/企业适配 5 篇</td><td><span class="badge b-mod">入门</span></td><td>W1-3</td></tr>
+        <tr><td>2.掘金_不良资产经营_读书报告</td><td>02 理论课堂 · 不良资产</td><td>生态/尽调估值/化解路径/纾困 5 篇</td><td><span class="badge b-mod">进阶</span></td><td>W6-7</td></tr>
+        <tr><td>3.稳评指南_读书报告</td><td>02 理论课堂 · 风险评估方法论</td><td>四性/五步/评级/报告规范 5 篇</td><td><span class="badge b-mod">进阶</span></td><td>W3·W8</td></tr>
+        <tr><td>4.黑天鹅_读书报告</td><td>02 理论课堂 · 反脆弱</td><td>定义/陷阱/杠铃/反脆弱 5 篇</td><td><span class="badge b-mod">高阶</span></td><td>W10-11</td></tr>
+        <tr><td>5.闪电战_读书报告</td><td>02 理论课堂 · 舆情攻防</td><td>预警/响应/处置/修复 5 篇</td><td><span class="badge b-mod">高阶</span></td><td>W10-12</td></tr>
+        <tr><td>6.商业风控白皮书</td><td>02 理论课堂 · 风控资产化</td><td>现有 24 条目合并为 7 章 + 附录 9 篇</td><td><span class="badge b-mod">进阶</span></td><td>全线+延伸</td></tr>
+        <tr><td>风险处置学习方案</td><td>01 学习路径 + 全站骨架</td><td>总览 1 + 周历 13 + 验收 3</td><td><span class="badge b-path">入门</span></td><td>W0 总览</td></tr>
+        <tr><td>标准风险处置方案模板</td><td>03 工具箱 · 模板讲解</td><td>结构拆解（六段）→ 配套下载</td><td><span class="badge b-tool">入门</span></td><td>W7-8 产出</td></tr>
+        <tr><td>企业风险评估报告模板</td><td>03 工具箱 · 模板讲解</td><td>六维排查结构 → 配套下载</td><td><span class="badge b-tool">入门</span></td><td>W3-5 产出</td></tr>
+        <tr><td>风险隔离与止损 SOP</td><td>03 工具箱 · 模板讲解</td><td>五层隔离图 → 配套下载</td><td><span class="badge b-tool">入门</span></td><td>W10 配套</td></tr>
+        <tr><td>谈判沟通话术框架</td><td>03 工具箱 · 模板讲解</td><td>四场景话术 → 配套下载</td><td><span class="badge b-tool">进阶</span></td><td>W8-9 配套</td></tr>
+        <tr><td>项目结案复盘报告模板</td><td>03 工具箱 · 模板讲解</td><td>复盘框架 → 配套下载</td><td><span class="badge b-tool">入门</span></td><td>W13 产出</td></tr>
+        <tr><td>企业风险全面尽调清单.xlsx</td><td>03 工具箱 · 工具指南</td><td>8 工作表导览 + 使用说明 + 下载</td><td><span class="badge b-tool">入门</span></td><td>W2-4 配套</td></tr>
+        <tr><td>风险损失测算模板.xlsx</td><td>03 工具箱 · 工具指南</td><td>测算方法 + 示例 + 下载</td><td><span class="badge b-tool">进阶</span></td><td>W7 配套</td></tr>
+        <tr><td>风险等级评估表.xlsx</td><td>03 工具箱 · 工具指南</td><td>四级定级规则 + 下载</td><td><span class="badge b-tool">入门</span></td><td>W3 配套</td></tr>
+        <tr><td>央企应急管理办法.pdf</td><td>06 法规参考</td><td>体系框架图 + 要点卡</td><td><span class="badge b-law">参考</span></td><td>W10+</td></tr>
+        <tr><td>民法典担保制度解释.pdf</td><td>06 法规参考</td><td>13 条核心要点卡</td><td><span class="badge b-law">参考</span></td><td>W1-2 精读</td></tr>
+        <tr><td>风险投资人五大标准</td><td>02 理论课堂 · 资本视角</td><td>单篇延伸</td><td><span class="badge b-mod">入门</span></td><td>延伸</td></tr>
+        <tr><td colspan="5"><b>映射规则：</b>每个源文件必须能追溯到栏目与学习周；反向看，学习周 W1-13 每周至少能锚定 1-2 个对应文章/工具，保证"路径引导 → 内容可达"。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 5 学习路径 ============ -->
+<section id="path">
+  <h2><span class="no">5</span>学习路径设计（13 周成才）</h2>
+  <p class="sec-desc">基于三个月成才方案的结构化演绎：每周一个主题，配站内内容 + 输出物，形成可打卡的完整闭环。</p>
+
+  <div class="week"><div class="wk"><b>W0</b>启程</div><div class="wbody"><h5>入站引导</h5><p>学习总览页：专业画像、学习节奏说明、工具箱索引、如何打卡</p></div><div class="out">完成：画像自评</div></div>
+
+  <div class="week"><div class="wk"><b>W1</b><span class="phase-tag pt1">筑基</span></div><div class="wbody"><h5>风险处置全景 × 民法典担保基础</h5><p>《危机应对的道与术》摘要与框架；担保制度解释要点卡 13 条</p></div><div class="out">输出：风险类型自绘地图</div></div>
+  <div class="week"><div class="wk"><b>W2</b><span class="phase-tag pt1">筑基</span></div><div class="wbody"><h5>尽调基础 I：工商 / 涉诉 / 资产</h5><p>《危机应对》预判章节；尽调清单工具前 3 工作表导览</p></div><div class="out">输出：简易排查简报①</div></div>
+  <div class="week"><div class="wk"><b>W3</b><span class="phase-tag pt1">筑基</span></div><div class="wbody"><h5>尽调基础 II：合同 / 舆情 / 资金 + 风险定级</h5><p>尽调清单剩余工作表；等级评估表工具指南（四级定级）</p></div><div class="out">输出：简易排查简报② + 定级</div></div>
+  <div class="week"><div class="wk"><b>W4</b><span class="phase-tag pt1">筑基</span></div><div class="wbody"><h5>非诉处置逻辑 + 尽调出报告</h5><p>稳定性评估方法论（四性/五步）；评估报告模板拆解</p></div><div class="out">输出：一企一档风险评估报告</div></div>
+  <div class="week"><div class="wk"><b>W5</b><span class="phase-tag pt1">筑基</span></div><div class="wbody"><h5>筑基验收</h5><p>第一月复盘：预判-止损-复盘三环节串讲；验收清单</p></div><div class="out">验收：排查简报 + 评估报告</div></div>
+
+  <div class="week"><div class="wk"><b>W6</b><span class="phase-tag pt2">进阶</span></div><div class="wbody"><h5>不良资产行业生态与尽调估值</h5><p>《掘金》生态五方 + 尽调三维度 + 估值方法</p></div><div class="out">输出：估值思路卡</div></div>
+  <div class="week"><div class="wk"><b>W7</b><span class="phase-tag pt2">进阶</span></div><div class="wbody"><h5>损失测算 × 方案书结构</h5><p>损失测算工具指南；处置方案模板六段拆解（A/B/C 三套预案）</p></div><div class="out">输出：方案书①</div></div>
+  <div class="week"><div class="wk"><b>W8</b><span class="phase-tag pt2">进阶</span></div><div class="wbody"><h5>四大高频场景 × 谈判力</h5><p>逾期/违约/债务压力/股权僵局；谈判话术框架（四场景）</p></div><div class="out">输出：方案书②</div></div>
+  <div class="week"><div class="wk"><b>W9</b><span class="phase-tag pt2">进阶</span></div><div class="wbody"><h5>进阶验收</h5><p>债务纾困思维（《掘金》第 4 部分）；目标：方案独立成稿</p></div><div class="out">验收：完整处置方案书</div></div>
+
+  <div class="week"><div class="wk"><b>W10</b><span class="phase-tag pt3">成型</span></div><div class="wbody"><h5>风险隔离与止损 SOP</h5><p>五层隔离（业务/财务/法律/声誉/组织）；SOP 切换与退出机制；法规：央企应急办法</p></div><div class="out">输出：隔离方案演练</div></div>
+  <div class="week"><div class="wk"><b>W11</b><span class="phase-tag pt3">成型</span></div><div class="wbody"><h5>非常规风险与反脆弱</h5><p>《黑天鹅》：认知陷阱 / 杠铃策略 / 脆弱性扫描清单</p></div><div class="out">输出：脆弱性扫描</div></div>
+  <div class="week"><div class="wk"><b>W12</b><span class="phase-tag pt3">成型</span></div><div class="wbody"><h5>舆情攻防与声誉修复</h5><p>《闪电战》：立体雷达 / 黄金响应 / 三重诊断 / 跨境适配</p></div><div class="out">输出：舆情预案卡</div></div>
+  <div class="week"><div class="wk"><b>W13</b><span class="phase-tag pt3">成型</span></div><div class="wbody"><h5>沙盘毕业考 + 复盘沉淀</h5><p>四大爆雷场景全流程演练；复盘报告模板收口；产出个人方法论</p></div><div class="out">验收：整套处置交付物</div></div>
+
+  <blockquote class="callout">打卡机制：每周完成「阅读 → 工具使用 → 输出物」三步即打勾，全部勾选点亮阶段徽章（筑基/进阶/成型）。进度存 localStorage，纯本地、无账号成本。</blockquote>
+</section>
+
+<!-- ============ 6 视觉交互 ============ -->
+<section id="visual">
+  <h2><span class="no">6</span>视觉与交互方向</h2>
+  <p class="sec-desc">在现有站点雏形（深色侧栏文档站）基础上做品牌化升级，不推翻架构只换皮肤与组件。</p>
+
+  <div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <h4>视觉基调</h4>
+      <ul class="clean">
+        <li><b>色彩</b>：深海军蓝 <code style="background:#132c47;color:#fff;padding:1px 7px;border-radius:5px">#132C47</code> 主色 + 琥珀金 <code style="background:#f9efdd;color:#8a6414;padding:1px 7px;border-radius:5px">#C89B3C</code> 强调 + 冷灰内容区，传递"沉稳 · 专业 · 权威"</li>
+        <li><b>意象</b>：盾牌 / 仪表盘 / 风险矩阵四象限（SVG 内联，不依赖图片资源）</li>
+        <li><b>字号排版</b>：正文 15-16px、行高 1.8，长文留白为主，工具卡片走紧凑网格</li>
+        <li><b>明暗模式</b>：默认浅色，提供深色切换（CSS 变量驱动）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>交互组件清单</h4>
+      <div class="comp">
+        <div class="it"><b>13 周时间线</b><span>路径页主视觉，周进度自动高亮</span></div>
+        <div class="it"><b>周历打卡</b><span>三项打勾 + 徽章奖励，localStorage</span></div>
+        <div class="it"><b>工具卡片墙</b><span>模板/工具封面卡 + 下载 + 使用时机标签</span></div>
+        <div class="it"><b>全文搜索</b><span>标题+标签+正文摘要联合索引，高亮命中</span></div>
+        <div class="it"><b>已读标记</b><span>侧栏文章阅读后淡色/打勾</span></div>
+        <div class="it"><b>风险矩阵图</b><span>SVG 四象限可视化定级逻辑</span></div>
+        <div class="it"><b>五层隔离图</b><span>SOP 专属 SVG 层级示意</span></div>
+        <div class="it"><b>沙盘答题式交互</b><span>题干→输出框→参考答案折叠</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>与现有雏形的演进关系</h4>
+    <ul class="clean">
+      <li><b>保留</b>：四文件架构（index.html / app.js / data.js / style.css）、侧栏导航、hash 路由、搜索框、移动端抽屉</li>
+      <li><b>升级</b>：subtitle/品牌区由 site 配置驱动（不再写死文案）；导航分组从「学习计划/白皮书」扩展为六个栏目；修复渲染缺陷（<code>&lt;ol&gt;</code>、多行引用块、<code>:has()</code> 降级）</li>
+      <li><b>新增</b>：全文搜索索引、localStorage 进度层、打印样式</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 7 技术方案 ============ -->
+<section id="tech">
+  <h2><span class="no">7</span>技术方案</h2>
+  <p class="sec-desc">延续已验证的纯静态路线：零依赖、零部署成本、双击即用，同时规避此前项目踩过的坑。</p>
+
+  <div class="tree">
+risk-learning-site/                       <span class="c">← 网站源码区（内容与源码分离）</span>
+├─ index.html                             <span class="c">入口壳：侧栏 + 主内容 + 脚本挂载</span>
+├─ style.css                              <span class="c">样式：品牌变量 + 组件 + 移动端 + 打印</span>
+├─ app.js                                 <span class="c">逻辑：导航/路由/搜索/进度/沙盘交互</span>
+├─ data.js                                <span class="c">数据层（核心）：SITE_DATA.sections + articles</span>
+│   ├─ site: 标题/副标题/版本/最近更新
+│   ├─ sections: 6 栏目 × 子板块 × 文章引用
+│   └─ articles: 每篇 {id,title,tags,difficulty,week,content}
+└─ assets/                                 <span class="c">（可选）模板/工具下载文件引用目录</span>
+  </div>
+
+  <div class="card">
+    <h4>实现要点与避坑清单</h4>
+    <ul class="clean">
+      <li><b>数据格式</b>：data.js 用 JS 对象（非 fetch JSON），<code>file://</code> 双击直接可用，天然规避 CORS — 这是相对 Astrology Academy JSON 方案的关键改进，务必保持</li>
+      <li><b>字符串卫生</b>：JS 字符串内禁裸双引号，中文语境用「」替代，杜绝引号逃逸问题</li>
+      <li><b>文章元数据</b>：每篇带 difficulty（入门/进阶/高阶）、week（对应学习周）、tags，供路径页与筛选联动</li>
+      <li><b>缓存规避</b>：data.js 结构升级后，通过版本文件或改文件名强制刷新（浏览器 JS 缓存顽固，必要时提示无痕模式）</li>
+      <li><b>长文渲染</b>：读书报告正文量约 8-10 万字总量级，按章节拆分存储（不存超大单条），正文用 contentHtml 字段直接存 HTML，绕开简易 Markdown 渲染器的已知缺陷</li>
+      <li><b>本地校验</b>：开发期以 <code>python -m http.server 8765</code> 起本地服务便于调试，交付形态仍为双击可用</li>
+      <li><b>合规</b>：白皮书版权归融智研究院，站内标注出处；读书报告为个人学习笔记性质，站内声明"个人学习整理"</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 8 迭代验收 ============ -->
+<section id="iterate">
+  <h2><span class="no">8</span>迭代路线与验收标准</h2>
+  <p class="sec-desc">分四阶段推进，每阶段有可验证的站内成果；与《整理分析与优化建议》的 P0-P2 一一对应。</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th style="width:150px">阶段</th><th>动作</th><th>验收标准</th></tr></thead>
+      <tbody>
+        <tr><td><span class="prio p0">P0</span><b>内容标准化</b></td><td>目录重组 + 统一命名 + 18 文件元数据表</td><td>工作区 5+1 目录清晰；元数据表 18 行完整；无孤文件</td></tr>
+        <tr><td><span class="prio p0">P0</span><b>内容全量入站</b></td><td>5 篇读书报告章节化入站；白皮书修复；工具箱 8 件套上线</td><td>站内文章 ≥51 篇；导航按 6 栏目分组；白皮书无半截标题</td></tr>
+        <tr><td><span class="prio p1">P1</span><b>学习闭环</b></td><td>全文搜索 + 13 周打卡 + 已读标记 + 工具下载</td><td>搜索可命中正文；从 W0 一路打勾到 W13 点亮三段徽章</td></tr>
+        <tr><td><span class="prio p2">P2</span><b>训练站升级</b></td><td>沙盘 4 场景 + 案例库 15 + 笔记高亮 + 法规要点卡</td><td>独立完成至少 1 个爆雷场景整套处置交付；案例可检索</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote class="callout">第一步建议（规划确认后）：先执行 <b>P0 内容标准化</b>，随后按映射表分批生成 data.js — 每入站一份读书报告，即完成一次可验证的增量交付。</blockquote>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">《学习网站架构与内容体系规划》 · 规划基准 2026-09-14 · 与《风险处置内容整理分析与优化建议》配套使用 · 网站原型待规划确认后实施</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商业风险处置 · 实战学习站</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 移动端菜单按钮 -->
+        <button id="menu-toggle" class="menu-toggle" aria-label="切换菜单">
+            <span></span><span></span><span></span>
+        </button>
+        
+        <!-- 侧边栏 -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="site-title">商业风险处置</h1>
+                <p class="site-subtitle">实战学习站 · 三个月成才</p>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="搜索文章、标签..." autocomplete="off">
+                <div id="search-results" class="search-results"></div>
+            </div>
+            
+            <nav id="nav-tree" class="nav-tree"></nav>
+            
+            <div class="sidebar-footer">
+                <p>个人学习笔记整理</p>
+                <p id="last-updated"></p>
+            </div>
+        </aside>
+        
+        <!-- 遮罩层 -->
+        <div id="overlay" class="overlay"></div>
+        
+        <!-- 主内容区 -->
+        <main id="main-content" class="main-content">
+            <div class="content-wrapper">
+                <div id="breadcrumb" class="breadcrumb"></div>
+                <article id="article">
+                    <div class="article-header">
+                        <h1 id="article-title">欢迎使用</h1>
+                        <div id="article-meta" class="article-meta"></div>
+                    </div>
+                    <div id="article-body" class="article-body"></div>
+                </article>
+                <div id="article-nav" class="article-nav"></div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- 数据层：data.js 必须先于各分文件加载 -->
+    <script src="data.js"></script>
+    <script src="data-path.js"></script>
+    <script src="data-theory.js"></script>
+    <script src="data-tools.js"></script>
+    <script src="data-lab.js"></script>
+    <script src="data-cases.js"></script>
+    <script src="data-law.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

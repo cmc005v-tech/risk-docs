@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>风险处置内容整理分析与优化建议</title>
+<meta name="description" content="对《风险处置Commercial risk management》工作区的系统盘点、结构诊断与优化建议，为学习网站建设提供内容底座。">
+<style>
+:root{
+  --ink:#1a2233; --ink2:#44506a; --ink3:#7a869e;
+  --bg:#f5f7fb; --card:#ffffff; --line:#e3e8f2;
+  --brand:#1f3a5f; --brand2:#2d5b8e; --accent:#c89b3c; --accent2:#e8d9b0;
+  --ok:#1e7d4b; --warn:#a05a12; --bad:#a33131;
+  --p0:#a33131; --p1:#a05a12; --p2:#44506a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:15px;scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.75}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+/* ===== 头部 ===== */
+header.hero{background:linear-gradient(135deg,#16293f 0%,#1f3a5f 55%,#2d5b8e 100%);color:#fff;padding:64px 0 56px;position:relative;overflow:hidden}
+header.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:rgba(200,155,60,.10);pointer-events:none}
+.kicker{display:inline-block;font-size:.8rem;letter-spacing:2px;color:var(--accent2);text-transform:uppercase;margin-bottom:14px;border:1px solid rgba(200,155,60,.5);padding:3px 12px;border-radius:20px}
+h1{font-size:2.1rem;line-height:1.35;font-weight:700;margin-bottom:14px}
+.hero p.sub{font-size:1.02rem;color:#c6d3e4;max-width:760px}
+.hero-meta{margin-top:22px;display:flex;gap:26px;flex-wrap:wrap;font-size:.85rem;color:#9fb3cc}
+.hero-meta b{color:#fff;font-weight:600}
+
+/* ===== 导航 ===== */
+nav.toc{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);box-shadow:0 1px 6px rgba(31,58,95,.06)}
+nav.toc .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:0;padding-bottom:0}
+nav.toc a{display:inline-block;padding:13px 12px;font-size:.88rem;color:var(--ink2);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+nav.toc a:hover{color:var(--brand2);border-bottom-color:var(--accent)}
+
+/* ===== 章节 ===== */
+section{padding:54px 0 8px}
+h2{font-size:1.5rem;color:var(--brand);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+h2 .no{display:inline-flex;width:34px;height:34px;border-radius:9px;background:var(--brand);color:#fff;align-items:center;justify-content:center;font-size:1rem;flex:none}
+.sec-desc{color:var(--ink3);font-size:.92rem;margin-bottom:26px}
+h3{font-size:1.12rem;color:var(--brand2);margin:30px 0 12px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-bottom:20px;box-shadow:0 1px 3px rgba(31,58,95,.04)}
+.card h4{font-size:1rem;color:var(--ink);margin-bottom:10px;font-weight:700}
+
+/* ===== 统计卡 ===== */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:6px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 16px;text-align:center}
+.stat .num{font-size:1.9rem;font-weight:800;color:var(--brand2);line-height:1.2}
+.stat .lbl{font-size:.82rem;color:var(--ink3);margin-top:4px}
+.stat.acc .num{color:var(--accent)}
+
+/* ===== 表格 ===== */
+.table-scroll{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem;background:#fff}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+th{background:#eef2f9;color:var(--brand);font-weight:700;white-space:nowrap}
+tbody tr:nth-child(even){background:#fafbfe}
+td .tag{display:inline-block;font-size:.72rem;padding:1px 8px;border-radius:10px;white-space:nowrap}
+.tag.t1{background:#e8effa;color:#2d5b8e}
+.tag.t2{background:#e5f3ea;color:#1e7d4b}
+.tag.t3{background:#fdf1dd;color:#a05a12}
+.tag.t4{background:#f4e6e6;color:#a33131}
+.tag.t5{background:#eee9fb;color:#5b4a9e}
+.tag.t6{background:#f0f2f5;color:#44506a}
+
+/* ===== 优先级 ===== */
+.prio{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:6px;color:#fff;margin-right:8px}
+.prio.p0{background:var(--p0)} .prio.p1{background:var(--p1)} .prio.p2{background:var(--p2)}
+ul.clean{list-style:none}
+ul.clean>li{padding:9px 0 9px 26px;position:relative;border-bottom:1px dashed var(--line)}
+ul.clean>li:last-child{border-bottom:none}
+ul.clean>li::before{content:"▸";position:absolute;left:6px;color:var(--accent);font-weight:700}
+ul.clean li b{color:var(--brand2)}
+blockquote.callout{border-left:4px solid var(--accent);background:var(--accent2);padding:12px 18px;margin:16px 0;border-radius:0 8px 8px 0;font-size:.9rem;color:#5c4a1e}
+
+/* ===== 目录树 ===== */
+.tree{font-family:Consolas,"Cascadia Code",Menlo,monospace;font-size:.86rem;background:#101f33;color:#d7e4f4;border-radius:10px;padding:18px 22px;overflow-x:auto;line-height:1.85}
+.tree .dir{color:#8fd0ff;font-weight:600}
+.tree .cmt{color:#7a869e}
+
+/* ===== 网格 ===== */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+
+/* ===== 步骤 ===== */
+.steps{counter-reset:st}
+.step{position:relative;padding:16px 20px 16px 64px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
+.step::before{counter-increment:st;content:counter(st);position:absolute;left:18px;top:16px;width:32px;height:32px;border-radius:50%;background:var(--brand2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem}
+.step h4{font-size:.98rem;margin-bottom:6px;color:var(--brand)}
+.step p{font-size:.9rem;color:var(--ink2)}
+
+footer{border-top:1px solid var(--line);margin-top:60px;padding:28px 0 44px;text-align:center;color:var(--ink3);font-size:.8rem}
+
+/* ===== 打印 ===== */
+@media print{
+  nav.toc{display:none}
+  body{background:#fff;font-size:12px}
+  .card,table{box-shadow:none;border-color:#ccc}
+  section{padding:24px 0 4px}
+  header.hero{padding:32px 0}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">Content Audit &amp; Optimization</span>
+    <h1>风险处置内容整理分析与优化建议</h1>
+    <p class="sub">对工作区《风险处置 Commercial risk management》全部 18 份内容资产的系统盘点、结构诊断与分级优化方案。本报告同时构成学习网站建设的内容底座清单。</p>
+    <div class="hero-meta">
+      <span>盘点日期：<b>2026-09-14</b></span>
+      <span>覆盖文件：<b>18 份</b></span>
+      <span>资产分类：<b>5 类</b></span>
+      <span>当前状态：<b>内容库成型 · 网站仅接入 2/18</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#overview">一、资产总览</a>
+    <a href="#list">二、逐文件盘点</a>
+    <a href="#diagnosis">三、结构诊断</a>
+    <a href="#plan">四、优化建议</a>
+    <a href="#roadmap">五、网站接入路线</a>
+    <a href="#appendix">六、附录清单</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- ================= 一、总览 ================= -->
+<section id="overview">
+  <h2><span class="no">1</span>内容资产总览</h2>
+  <p class="sec-desc">工作区现有内容已覆盖「认知理论 → 学习规划 → 实操工具 → 评估测算 → 法规参考」的完整学习价值链，这是做学习网站最大的存量优势。</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num">18</div><div class="lbl">内容文件总数</div></div>
+    <div class="stat"><div class="num">13</div><div class="lbl">Word 文档（.docx）</div></div>
+    <div class="stat"><div class="num">3</div><div class="lbl">Excel 工具（.xlsx）</div></div>
+    <div class="stat"><div class="num">2</div><div class="lbl">法规原文（.pdf）</div></div>
+    <div class="stat acc"><div class="num">6</div><div class="lbl">读书报告 + 白皮书（认知层）</div></div>
+    <div class="stat acc"><div class="num">8</div><div class="lbl">实操模板与评估工具</div></div>
+  </div>
+
+  <h3>五类资产与学习价值链</h3>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th style="width:120px">资产类别</th><th style="width:60px">数量</th><th>包含内容</th><th>在价值链中的作用</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag t1">01 认知理论</span></td><td>6</td><td>5 篇读书报告 + 1 份白皮书</td><td>建立风险处置方法论与思维框架（预判—止损—复盘；不良资产；稳评；黑天鹅；舆情攻防）</td></tr>
+        <tr><td><span class="tag t2">02 学习规划</span></td><td>1</td><td>三个月系统成才方案（含书单）</td><td>全网的学习主线索：筑基期→方案能力→标准化上岗</td></tr>
+        <tr><td><span class="tag t3">03 实操模板</span></td><td>5</td><td>处置方案 / 评估报告 / 复盘报告 / 隔离止损 SOP / 谈判话术</td><td>把方法论变成可交付的职业技能产物，对应"方案能力"</td></tr>
+        <tr><td><span class="tag t4">04 评估工具</span></td><td>3</td><td>尽调清单（8 工作表）/ 损失测算 / 等级评估（xlsx）</td><td>标准化执行动作：排查、定级、算损失</td></tr>
+        <tr><td><span class="tag t5">05 法规参考</span></td><td>2</td><td>央企应急管理办法（征求意见稿）/ 民法典担保制度解释</td><td>处置动作的合规依据与底线</td></tr>
+        <tr><td><span class="tag t6">06 扩展素材</span></td><td>1</td><td>风险投资人五大标准（短文）</td><td>反向视角：从资本方看风险判断，可作延伸阅读</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote class="callout">关键结论：18 份内容中仅 2 份（学习方案、白皮书）已进入现有网站雏形，16 份尚未接入。<b>本期核心任务不是"从零造内容"，而是"把存量资产结构化、成体系、可学习"。</b></blockquote>
+</section>
+
+<!-- ================= 二、逐文件盘点 ================= -->
+<section id="list">
+  <h2><span class="no">2</span>逐文件盘点明细</h2>
+  <p class="sec-desc">按文件实际内容盘点主题定位、核心能力点与网站接入状态（文件名为当前状态，未含建议改名）。</p>
+
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th style="width:210px">文件</th><th>类型</th><th>主题定位</th><th>核心能力点</th><th>站内状态</th></tr></thead>
+      <tbody>
+        <tr><td>1.危机应对的道与术_读书报告</td><td><span class="tag t1">认知理论</span></td><td>企业突发风险处置思维</td><td>预判—止损—复盘三环节；风险监测仪表盘；处置 SOP 思维</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>2.掘金_不良资产经营_读书报告</td><td><span class="tag t1">认知理论</span></td><td>不良资产与债务纾困实操</td><td>行业生态五方博弈；尽调估值；债务重组/破产重整/债转股路径；纾困方案与成本测算</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>3.重大决策社会稳定风险评估指南_读书报告</td><td><span class="tag t1">认知理论</span></td><td>标准化风险评估方法论</td><td>四性评估框架；五步工作法；风险识别清单；三级评级；评估报告规范</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>4.黑天鹅_读书报告</td><td><span class="tag t1">认知理论</span></td><td>非常规风险与反脆弱</td><td>黑天鹅定义与认知陷阱；肥尾分布；杠铃策略；脆弱性扫描；反脆弱组织</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>5.闪电战_AI时代上市公司舆情攻防实战手册_读书报告</td><td><span class="tag t1">认知理论</span></td><td>舆情危机攻防</td><td>AI 舆情生态；立体雷达监测；黄金响应；三重诊断；声誉修复；跨境场景适配</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>6.商业风控 — 企业的隐形数字资产白皮书</td><td><span class="tag t1">认知理论</span></td><td>风控资产化认知重构</td><td>风控的资产属性；中外对比；四重阻碍；五大转型范式；理性边界</td><td><span class="tag t2">已接入（24 条目）</span></td></tr>
+        <tr><td>风险处置学习方案（学习计划+书单+全套模板）</td><td><span class="tag t2">学习规划</span></td><td>三个月成才主计划</td><td>三阶段/三个月排期；四大高频场景；三套预案训练；书单；模板索引</td><td><span class="tag t2">已接入（6 条目）</span></td></tr>
+        <tr><td>标准风险处置方案模板_三套预案版</td><td><span class="tag t3">实操模板</span></td><td>处置方案交付物母版</td><td>风险概况→损失测算→三套预案→执行计划→隔离止损→复盘沉淀全链结构</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>企业风险排查的风险评估报告模板</td><td><span class="tag t3">实操模板</span></td><td>尽调出报告母版</td><td>六维排查结构（工商/涉诉/资产/合同/舆情/资金）；综合定级规则；决策建议</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>项目结案复盘报告模板</td><td><span class="tag t3">实操模板</span></td><td>处置收尾复盘母版</td><td>时间轴复盘；预判/止损/决策/执行/成本分项复盘；经验沉淀与制度建议</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>风险隔离与止损操作SOP</td><td><span class="tag t3">实操模板</span></td><td>隔离止损标准动作</td><td>五层隔离（业务/财务/法律/声誉/组织）；止损底线；三套预案切换；退出机制</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>谈判沟通话术框架</td><td><span class="tag t3">实操模板</span></td><td>谈判执行手册</td><td>四种谈判场景话术；特殊场景（哭穷/威胁/多方竞争/跨境）；心理战术；归档</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>企业风险全面尽调清单.xlsx</td><td><span class="tag t4">评估工具</span></td><td>尽调执行底表</td><td>8 个工作表：工商/涉诉/资产/合同债务/舆情/资金财务六维全覆盖</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>风险损失测算模板.xlsx</td><td><span class="tag t4">评估工具</span></td><td>损失量化计算底表</td><td>5 个工作表：直接损失、逾期利息、预期损失等量化测算</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>风险等级评估表.xlsx</td><td><span class="tag t4">评估工具</span></td><td>风险定级打分底表</td><td>3 个工作表：低/中/高/致命四级定级与打分</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>中央企业应急管理办法（征求意见稿）.pdf</td><td><span class="tag t5">法规参考</span></td><td>央企应急管理体系规章</td><td>应急管理组织、预案、处置、演练的制度参考模板</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>民法典担保制度解释.pdf</td><td><span class="tag t5">法规参考</span></td><td>担保责任司法依据</td><td>连带/一般保证、抵押质押、担保追责的裁判规则（学习方案指定精读）</td><td><span class="tag t6">未接入</span></td></tr>
+        <tr><td>风险投资人选择初创企业和团队的五大标准</td><td><span class="tag t6">扩展素材</span></td><td>资本方风险判断视角</td><td>CEO 占 30% 等五维评估标准，延伸阅读</td><td><span class="tag t6">未接入</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 三、结构诊断 ================= -->
+<section id="diagnosis">
+  <h2><span class="no">3</span>结构诊断：六大问题</h2>
+  <p class="sec-desc">以下问题均基于本次实际盘点结果，按影响程度排序；每条均给出可验证的证据。</p>
+
+  <div class="card">
+    <h4>问题 ① 网站内容覆盖残缺 16/18 — 最优先解决</h4>
+    <p>现有网站雏形（risk-learning-site/data.js）仅接入「学习方案（6 条目）+ 白皮书（24 条目）」两类内容。<b>5 篇读书报告——每篇均为近万字、含逐章拆解与企业适配落地章节的高价值内容——完全缺席</b>；8 个实操模板/工具、2 份法规同样未入站。学习者进站只能看到"计划和白皮书"，看不到方法论全貌，也无法使用工具，学习闭环断裂。</p>
+  </div>
+
+  <div class="card">
+    <h4>问题 ② 根目录平铺、命名不统一</h4>
+    <p>18 个个文件全部平铺在工作区根目录，5 类资产无任何目录分层。命名风格四分五裂：序号仅覆盖 1-6（且"6.白皮书"与读书报告混序）；全角破折号（"商业风控 — 企业的隐形数字资产"）、书名号、下划线混用；无版本号、无日期。将来文件继续增长必然失控。</p>
+  </div>
+
+  <div class="card">
+    <h4>问题 ③ data.js 内容片段化、标题半截</h4>
+    <p>白皮书条目中多条导航标题是<b>截断的半句话</b>：如"第一，无形性。""第二，组织可沉淀性。""第一大块，前置伴随式长期陪跑服务：企业设立、股权搭建…"。部分正文也被截断（如 3.1 供给端条目全文仅一句）。作为导航与阅读体验，这直接影响用户判断内容。</p>
+  </div>
+
+  <div class="card">
+    <h4>问题 ④ 元数据缺失、文件间关联断裂</h4>
+    <p>所有文件无创建/更新日期、无来源标记、无难度分级、无标签体系。学习方案明确承诺"全套模板"（尽调清单、等级评估表、损失测算、方案模板、SOP、话术、复盘模板共 7 件套），但站内没有一张索引清单把这些工具挂出来，方案与工具之间的配套关系全靠记忆。</p>
+  </div>
+
+  <div class="card">
+    <h4>问题 ⑤ 学习闭环断档：无进度、无输出、无练习位</h4>
+    <p>学习方案定义了高强度输出节奏（第 1 月每 2 天一份排查简报、第 2 月每周一份完整处置方案、第 3 月沙盘模拟），但网站没有任何进度追踪、作业或练习入口。读书（认知）→ 模板（技能）→ 工具（测算）→ 输出（验收）之间缺少串联装置，无法回答"我学到哪、练到什么程度"。</p>
+  </div>
+
+  <div class="card">
+    <h4>问题 ⑥ 前端技术债</h4>
+    <div class="grid2">
+      <ul class="clean">
+        <li><b>有序列表渲染缺陷</b>：simpleMarkdownToHtml 只为无序列表包 <code>&lt;ul&gt;</code>，<code>&lt;ol&gt;</code> 未生成，编号列表样式失效</li>
+        <li><b>多行引用块</b>：每行独立生成 <code>&lt;blockquote&gt;</code>，视觉断裂</li>
+        <li><b>搜索不覆盖正文</b>：仅匹配标题+标签</li>
+      </ul>
+      <ul class="clean">
+        <li><b>:has() 选择器</b>：Safari 旧版不兼容，需降级方案</li>
+        <li><b>subtitle 写死</b>："基于三个月成才方案与白皮书"，内容扩展后定位失准</li>
+        <li><b>缺 SEO 基础</b>：无 meta description、无 favicon、无打印样式</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 四、优化建议 ================= -->
+<section id="plan">
+  <h2><span class="no">4</span>优化建议</h2>
+  <p class="sec-desc">建议按 P0 → P1 → P2 三级推进：先止血（结构+接入），再提体验（搜索+进度），后做深度（沙盘+案例）。</p>
+
+  <h3>4.1 目录重组方案（P0）</h3>
+  <p class="sec-desc">按资产类别建立一层子目录，风险学习网站源码独立成区，避免内容与代码混放。</p>
+  <div class="tree">
+G:\A工作中心\风险处置Commercial risk management\
+├─ 01_认知理论\        ← 5 篇读书报告 + 白皮书 + 投资人五大标准（8 份）
+├─ 02_学习规划\        ← 风险处置学习方案（1 份）
+├─ 03_实操模板\        ← 方案/评估报告/复盘/SOP/话术（5 份）
+├─ 04_评估工具\        ← 尽调清单/损失测算/等级评估 xlsx（3 份）
+├─ 05_法规参考\        ← 2 份 PDF
+└─ 06_网站源码\        ← risk-learning-site（4 文件，含 data.js 数据层）
+  </div>
+
+  <h3>4.2 命名规范（P0）</h3>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th style="width:140px">类别</th><th>规范</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr><td>读书报告</td><td>读书报告_《书名》_副题</td><td>读书报告_《危机应对的道与术》_预判止损复盘</td></tr>
+        <tr><td>白皮书/方案</td><td>类别_主题_版本日期</td><td>白皮书_商业风控隐形数字资产_2026</td></tr>
+        <tr><td>模板/SOP</td><td>模板_对象_版本</td><td>模板_标准风险处置方案_三套预案版</td></tr>
+        <tr><td>评估工具</td><td>工具_用途_版本</td><td>工具_企业风险全面尽调清单_v1</td></tr>
+        <tr><td>法规</td><td>法规_发布机构_名称</td><td>法规_最高法_民法典担保制度解释</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.3 分级实施清单</h3>
+
+  <div class="card">
+    <h4><span class="prio p0">P0 立即执行（1-2 天）</span>内容结构与接入修复</h4>
+    <ul class="clean">
+      <li><b>执行目录重组与统一命名</b>（4.1 + 4.2），移动文件前与用户确认，避免破坏桌面引用</li>
+      <li><b>5 篇读书报告结构化入站</b>：每篇按「摘要 / 框架 / 章节拆解 / 企业适配」四段转成 data.js 条目，标题用完整语义化表述</li>
+      <li><b>修复白皮书条目</b>：半截标题补全（如"第一，无形性"→"风控资产的四大特征：无形性"），被截断正文补齐原文</li>
+      <li><b>新增"工具箱索引页"</b>：一张清单挂出 7 件套（5 模板 + 2 工具）的用途、适用场景、配套关系</li>
+      <li><b>建元数据表</b>：为 18 个文件补充 日期 / 来源 / 难度（入门·进阶·高阶）/ 标签 / 对应学习阶段，作为 data.js 的 article.meta 字段</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4><span class="prio p1">P1 体验增强（一周内）</span>检索与学习闭环</h4>
+    <ul class="clean">
+      <li><b>全文搜索</b>：将 article.content 纳入索引（前端建立标题+标签+正文摘要的扁平索引）</li>
+      <li><b>学习路径页 + 周级打卡</b>：3 个月拆成 13 周，每完成一篇阅读/一个输出项打勾，localStorage 持久化</li>
+      <li><b>文章阅读进度记忆</b>：记住最后阅读位置与已读文章标灰</li>
+      <li><b>工具卡片区</b>：3 个 xlsx 提供下载链接 + 使用说明（如何打分、如何测算）+ 与模板的联动指引（评估表→评估报告）</li>
+      <li><b>修复技术债</b>：<code>&lt;ol&gt;</code> 渲染、多行引用块、<code>:has()</code> 降级、subtitle 改由 site 配置驱动</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4><span class="prio p2">P2 深度功能（后续迭代）</span>从"阅读站"到"训练站"</h4>
+    <ul class="clean">
+      <li><b>沙盘模拟练习页</b>：对应学习方案第 3 月四大爆雷场景（客户拖欠大额款项 / 项目中途违约停工 / 多方债务集中到期 / 合作方恶意扣货违约），每场景给题干→要求输出尽调+方案+话术+时间表</li>
+      <li><b>案例库</b>：从 5 篇读书报告中抽取 15-20 个标注案例，按处置手法打标签（止损/谈判/重组/舆情）</li>
+      <li><b>笔记/高亮</b>：阅读时选区高亮并沉淀本地笔记</li>
+      <li><b>法规要点卡</b>：2 份 PDF 提炼《担保法解释》13 条核心 + 央企应急办法架构图，替代原文阅读门槛</li>
+      <li><b>导出能力</b>：文章页打印样式 + 一键导出全文 PDF；全站知识地图</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 五、网站接入路线 ================= -->
+<section id="roadmap">
+  <h2><span class="no">5</span>网站接入路线图</h2>
+  <p class="sec-desc">与《学习网站架构与内容体系规划》配套的内容落地节奏；每一阶段结束都有可验收的站内成果。</p>
+
+  <div class="steps">
+    <div class="step"><h4>Phase 0 · 内容标准化（P0 完成即达成）</h4><p>目录重组 + 统一命名 + 18 文件元数据表定稿。验收：工作区 5+1 目录结构清晰，元数据表 18 行完整。</p></div>
+    <div class="step"><h4>Phase 1 · 内容全量入站（P0+P1 部分）</h4><p>5 篇读书报告按章节入站；白皮书标题/正文修复；工具箱索引页上线。验收：站内文章数由 30 提升至约 60-70 篇，导航可读性达标。</p></div>
+    <div class="step"><h4>Phase 2 · 学习闭环上线（P1 完成）</h4><p>全文搜索、13 周学习日历打卡、工具下载区、阅读进度。验收：可从首页沿路径学到第 13 周并完成 3 份输出物。</p></div>
+    <div class="step"><h4>Phase 3 · 训练站升级（P2）</h4><p>沙盘练习、案例库、笔记、法规要点卡。验收：独立完成模拟爆雷场景的整套处置交付。</p></div>
+  </div>
+
+  <blockquote class="callout">内容优先级：<b>读书报告 &gt; 模板工具 &gt; 法规要点</b>。读书报告贡献方法论与案例（广度），模板工具贡献可复用交付物（深度），法规建议以"要点卡"而非全文入站。</blockquote>
+</section>
+
+<!-- ================= 六、附录 ================= -->
+<section id="appendix">
+  <h2><span class="no">6</span>附录：完整文件清单</h2>
+  <p class="sec-desc">含各类别建议动作汇总；文件名为当前实际文件名。</p>
+  <div class="table-scroll">
+    <table>
+      <thead><tr><th style="width:20px">#</th><th>类别</th><th>文件名</th><th>格式</th><th>建议动作</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="tag t1">认知理论</span></td><td>1.危机应对的道与术_读书报告</td><td>docx</td><td>结构化入站（摘要/框架/章节/适配）</td></tr>
+        <tr><td>2</td><td><span class="tag t1">认知理论</span></td><td>2.掘金_不良资产经营_读书报告</td><td>docx</td><td>结构化入站 + 提取债务纾困案例</td></tr>
+        <tr><td>3</td><td><span class="tag t1">认知理论</span></td><td>3.重大决策社会稳定风险评估指南_读书报告</td><td>docx</td><td>结构化入站 + 评级方法论对应工具联动</td></tr>
+        <tr><td>4</td><td><span class="tag t1">认知理论</span></td><td>4.黑天鹅_读书报告</td><td>docx</td><td>结构化入站 + 脆弱性扫描清单沉淀</td></tr>
+        <tr><td>5</td><td><span class="tag t1">认知理论</span></td><td>5.闪电战_AI时代上市公司舆情攻防实战手册_读书报告</td><td>docx</td><td>结构化入站 + 舆情预警机制沉淀</td></tr>
+        <tr><td>6</td><td><span class="tag t1">认知理论</span></td><td>6.商业风控 — 企业的隐形数字资产白皮书</td><td>docx</td><td>已在站，修复半截标题与截断正文</td></tr>
+        <tr><td>7</td><td><span class="tag t1">认知理论</span></td><td>风险投资人选择初创企业和团队的五大标准</td><td>docx</td><td>入站为延伸阅读</td></tr>
+        <tr><td>8</td><td><span class="tag t2">学习规划</span></td><td>风险处置学习方案（学习计划+书单+全套模板）</td><td>docx</td><td>已在站；升级为路径页数据源（13 周拆解）</td></tr>
+        <tr><td>9</td><td><span class="tag t3">实操模板</span></td><td>标准风险处置方案模板_三套预案版</td><td>docx</td><td>入站为"方案撰写"课程主题 + 下载</td></tr>
+        <tr><td>10</td><td><span class="tag t3">实操模板</span></td><td>企业风险排查的风险评估报告模板</td><td>docx</td><td>入站为"尽调出报告"课程主题 + 下载</td></tr>
+        <tr><td>11</td><td><span class="tag t3">实操模板</span></td><td>项目结案复盘报告模板</td><td>docx</td><td>入站为"复盘"课程主题 + 下载</td></tr>
+        <tr><td>12</td><td><span class="tag t3">实操模板</span></td><td>风险隔离与止损操作SOP</td><td>docx</td><td>入站为"隔离止损"章节 + 下载</td></tr>
+        <tr><td>13</td><td><span class="tag t3">实操模板</span></td><td>谈判沟通话术框架</td><td>docx</td><td>入站为"谈判"章节 + 下载</td></tr>
+        <tr><td>14</td><td><span class="tag t4">评估工具</span></td><td>企业风险全面尽调清单.xlsx</td><td>xlsx</td><td>工具箱卡片 + 下载 + 使用说明</td></tr>
+        <tr><td>15</td><td><span class="tag t4">评估工具</span></td><td>风险损失测算模板.xlsx</td><td>xlsx</td><td>工具箱卡片 + 下载 + 测算方法说明</td></tr>
+        <tr><td>16</td><td><span class="tag t4">评估工具</span></td><td>风险等级评估表.xlsx</td><td>xlsx</td><td>工具箱卡片 + 下载 + 定级规则说明</td></tr>
+        <tr><td>17</td><td><span class="tag t5">法规参考</span></td><td>中央企业应急管理办法（征求意见稿）.pdf</td><td>pdf</td><td>提炼要点卡；原文保留在站外目录</td></tr>
+        <tr><td>18</td><td><span class="tag t5">法规参考</span></td><td>民法典担保制度解释.pdf</td><td>pdf</td><td>提炼 13 条核心要点卡（学习方案指定精读）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">《风险处置内容整理分析与优化建议》 · 盘点基准 2026-09-14 · 与《学习网站架构与内容体系规划》配套使用</div>
+</footer>
+
+</body>
+</html>
