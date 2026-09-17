@@ -294,7 +294,14 @@
 
         // Content
         if (article.contentHtml) {
-            articleBody.innerHTML = article.contentHtml.replace(/\\n/g, '\n');
+            let html = article.contentHtml.replace(/\\n/g, '\n');
+            // Fix inline Markdown inside HTML content (**bold** and [link](file.md))
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\[([^\]]+)\]\(([^)]+\.md)\)/g, function(m, text, file) {
+                var id = file.match(/^([a-z]+-\d+)/);
+                return '<a href="#' + (id ? id[1] : '') + '">' + text.replace(/\.md$/, '') + '</a>';
+            });
+            articleBody.innerHTML = html;
         } else if (article.content) {
             articleBody.innerHTML = simpleMarkdownToHtml(article.content);
         } else {
